@@ -1,5 +1,5 @@
 import numpy
-from astropy.io import fits
+
 
 # observatory location: latitude (deg), altitude (km)
 lat = -29.0
