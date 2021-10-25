@@ -5,7 +5,7 @@ from tell_grid.make_tel_model import generate_telluric, convolve_model
 from tell_grid.locales import Lick as obs
 
 # Boundaries of wavelength grid in nm
-wv_min = 550.0
+wv_min = 300.0
 wv_max = 1050.0
 
 # Parameters of telluric model
@@ -43,7 +43,7 @@ tell_lr_smo = gaussian_filter(tell_lr,sig)
 fig, ax = plt.subplots(1,1,figsize=(7,4))
 plt.plot(wave_hr,tell_hr,c='royalblue',lw=0.1,label='High-res model')
 plt.plot(wave_lr,tell_lr_smo,c='firebrick',lw=1.5,drawstyle='steps-mid',label='Low-res model')
-plt.xlim(680,1000)
+plt.xlim(wv_min,wv_max)
 plt.ylim(0,1.05)
 plt.xlabel('Wavelength [nm]',fontsize=15)
 plt.ylabel('Transmission',fontsize=15)
