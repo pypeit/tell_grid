@@ -1,7 +1,7 @@
 import numpy as np
 from telfit import TelluricFitter, DataStructures
 from scipy.interpolate import interp1d
-from scipy.signal import convolve
+from scipy.ndimage import convolve1d
 from astropy.io import fits
 import astropy.units as u
 import sys
@@ -18,8 +18,10 @@ def generate_telluric(lat=-24.6, alt=2.4, # observatory latitude and longitude (
     # prepare TelFit object
     fitter = TelluricFitter()
     
-    # if observatory is given, try using that:
+    # Set observatory from latitude and altitude
     fitter.SetObservatory({"latitude": lat, "altitude": alt})
+    
+    # Prepare TelFit parameters
     fitter.AdjustValue({"angle": np.arccos(1.0/airmass)*180.0/np.pi, # angle from zenith in degrees
                        "pressure": pressure, # pressure in mbar
                        "temperature": temperature+273.15, # temperature in Kelvin
@@ -28,9 +30,10 @@ def generate_telluric(lat=-24.6, alt=2.4, # observatory latitude and longitude (
                        "waveend": waveend + 20.0, # maximum wavelength in nm
                        "co2": 400.0, # CO2 content in ppm (default is year 2000 level; should possibly be upped to 410 for 2020+...)
                        }) # In principle, many other molecular abundances can be specified. See TelFit documentation for details.
-    fitter.air_wave = False # vacuum wavelengths
-    fitter.xunits = u.nm
-    tm = fitter.GenerateModel([],nofit=True)
+                       
+    fitter.air_wave = False # we want to use vacuum wavelengths
+    fitter.xunits = u.nm # standard TelFit units
+    tm = fitter.GenerateModel([],nofit=True) # now compute the transmission model
 
     return tm.x, tm.y # wave grid, transmission grid
 
@@ -54,7 +57,7 @@ def convolve_model(wave_in, # high-resolution telluric wavelengths
     w = (1.0/num2)*np.ones(num2)
     
     # Downsample the model by convolving and resampling
-    conv_model = convolve(hires_model,w,mode='same')
+    conv_model = convolve1d(hires_model,w)
     interp_conv_model = interp1d(new_wave,conv_model)
     model_out = interp_conv_model(wave_out)
 
