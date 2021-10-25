@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter
 from tell_grid.make_tel_model import generate_telluric, convolve_model
-import locales.Lick as obs
+from tell_grid.locales import Lick as obs
 
 # Boundaries of wavelength grid in nm
 wv_min = 550.0
