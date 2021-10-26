@@ -5,7 +5,7 @@ from astropy.io import fits
 # Telluric grid parameters
 # This could be done *a lot* more elegantly...
 obs = sys.argv[1] # observatory/location name recognized by TelFit
-exec("import locales.%s as %s" % (obs,obs))
+exec("from tell_grid import locales.%s as %s" % (obs,obs))
 # pressure
 exec("pmin = %s.pmin" % obs)
 exec("pmax = %s.pmax" % obs)

@@ -4,7 +4,7 @@ import os
 
 # Grid parameters loaded in from observatory grid file
 obs = sys.argv[1] # observatory name recognized by TelFit
-exec("import %s" % obs)
+exec("from tell_grid.locales import %s" % obs)
 # pressure
 exec("pmin = %s.pmin" % obs)
 exec("pmax = %s.pmax" % obs)
