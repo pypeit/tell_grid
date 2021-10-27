@@ -32,7 +32,7 @@ dloglam = np.log(1+1/(R*2.5))
 wave_lr = np.exp(np.arange(np.log(wv_min),np.log(wv_max),dloglam))
 
 # Bin down and resample telluric model
-wave_lr, tell_lr = convolve_model(wave_hr,tell_hr,wave_lr,wv_min,wv_max,R)
+tell_lr = convolve_model(wave_hr,tell_hr,wave_lr,wv_min,wv_max,R)
 
 # Note that convolve_model *does not* include Gaussian smoothing!
 # Let's now additionally smooth by a Gaussian corresponding to R = 2000.

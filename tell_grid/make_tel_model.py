@@ -61,7 +61,7 @@ def convolve_model(wave_in, # high-resolution telluric wavelengths
     interp_conv_model = interp1d(new_wave,conv_model)
     model_out = interp_conv_model(wave_out)
 
-    return wave_out, model_out
+    return model_out
 
 # Write telluric model to fits file
 def save_telluric_model(wave_out,
