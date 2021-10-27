@@ -22,7 +22,7 @@ def generate_telluric(lat=-24.6, alt=2.4, # observatory latitude and longitude (
     fitter.SetObservatory({"latitude": lat, "altitude": alt})
     
     # Prepare TelFit parameters
-    fitter.AdjustValue({"angle": np.arccos(1.0/airmass)*180.0/np.pi, # angle from zenith in degrees
+    fitter.AdjustValue({"angle": np.arccos(1.0/airmass)*180.0/np.pi, # angle from zenith in degrees, computed from airmass
                        "pressure": pressure, # pressure in mbar
                        "temperature": temperature+273.15, # temperature in Kelvin
                        "h2o": humidity, # percent humidity
@@ -104,6 +104,7 @@ if __name__== "__main__":
     R = float(sys.argv[7])
     observatory = sys.argv[8]
     
+    # Output filename, to be read in by collate_grid
     fn='output_grids/{:s}/TellModel_{:s}_{:.0f}_{:.0f}_P{:.0f}_T{:.0f}_H{:.0f}_AM{:.3f}_R{:.0f}.fits'.format(observatory,observatory,
                                                                                                       wavestart,waveend,
                                                                                                  pressure,temperature,humidity,
@@ -111,8 +112,8 @@ if __name__== "__main__":
     
     # Get observatory information
     exec("import tell_grid.locales.%s as %s" % (observatory,observatory))
-    exec("lat = %s.pmin" % observatory)
-    exec("alt = %s.pmax" % observatory)
+    exec("lat = %s.lat" % observatory)
+    exec("alt = %s.alt" % observatory)
     
     dloglam = np.log(1+1/(R*2.5)) # 2.5 pixels per FWHM in the output file, sufficient to avoid aliasing as per Nyquist sampling
     wave_out = np.exp(np.arange(np.log(wavestart-10),np.log(waveend+10),dloglam)) # prepare output wavelength grid
@@ -121,6 +122,7 @@ if __name__== "__main__":
     model_out = convolve_model(wave_hr,model_hr,wave_out,wavestart,waveend,R) # convolve model and deposit onto output wavelength grid
     
     # print model to file
+    os.system("mkdir output_grids".format(observatory))
     os.system("mkdir output_grids/{:s}".format(observatory))
     save_telluric_model(wave_out, model_out, wavestart, waveend, pressure, temperature, humidity, airmass, observatory,
                        filename=fn)
