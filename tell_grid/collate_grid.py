@@ -31,8 +31,11 @@ exec("wmin = %s.wmin" % obs)
 exec("wmax = %s.wmax" % obs)
 exec("R = %s.R" % obs)
 
+# directory with output files
+dir = 'output_grids/{:s}'.format(obs)
+
 # grab the wavelength grid from the first model in the grid
-fn0 = 'TellModel_{:s}_{:.0f}_{:.0f}_P{:.0f}_T{:.0f}_H{:.0f}_AM{:.3f}_R{:.0f}.fits'.format(
+fn0 = dir+'TellModel_{:s}_{:.0f}_{:.0f}_P{:.0f}_T{:.0f}_H{:.0f}_AM{:.3f}_R{:.0f}.fits'.format(
       obs,wmin,wmax,press[0],temp[0],humid[0],airm[0],R)
 wave_grid = fits.open(fn0)[1].data
 # initialize the full telluric grid
@@ -44,7 +47,7 @@ for ip in range(npres):
     for it in range(ntemp):
         for ih in range(nhum):
             for ia in range(nam):
-                fn = 'TellModel_{:s}_{:.0f}_{:.0f}_P{:.0f}_T{:.0f}_H{:.0f}_AM{:.3f}_R{:.0f}.fits'.format(
+                fn = dir+'TellModel_{:s}_{:.0f}_{:.0f}_P{:.0f}_T{:.0f}_H{:.0f}_AM{:.3f}_R{:.0f}.fits'.format(
                       obs,wmin,wmax,press[ip],temp[it],humid[ih],airm[ia],R)
                 tell_grid[ip,it,ih,ia] = fits.open(fn)[0].data
 
