@@ -110,9 +110,9 @@ if __name__== "__main__":
                                                                                                  airmass,R)
     
     # Get observatory information
-    exec("import locales.%s as %s" % (obs,obs))
-    exec("lat = %s.pmin" % obs)
-    exec("alt = %s.pmax" % obs)
+    exec("import tell_grid.locales.%s as %s" % (observatory,observatory))
+    exec("lat = %s.pmin" % observatory)
+    exec("alt = %s.pmax" % observatory)
     
     dloglam = np.log(1+1/(R*2.5)) # 2.5 pixels per FWHM in the output file, sufficient to avoid aliasing as per Nyquist sampling
     wave_out = np.exp(np.arange(np.log(wavestart-10),np.log(waveend+10),dloglam)) # prepare output wavelength grid
