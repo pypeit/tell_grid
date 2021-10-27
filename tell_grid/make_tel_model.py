@@ -110,7 +110,7 @@ if __name__== "__main__":
                                                                                                  airmass,R)
     
     # Get observatory information
-    exec("import locales.%s as %s" % (obs,obs))
+    exec("import tell_grid.locales.%s as %s" % (obs,obs))
     exec("lat = %s.pmin" % obs)
     exec("alt = %s.pmax" % obs)
     
