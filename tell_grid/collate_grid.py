@@ -5,7 +5,7 @@ from astropy.io import fits
 # Telluric grid parameters
 # This could be done *a lot* more elegantly...
 obs = sys.argv[1] # observatory/location name recognized by TelFit
-exec("from tell_grid import locales.%s as %s" % (obs,obs))
+exec("from tell_grid.locales import %s as %s" % (obs,obs))
 # pressure
 exec("pmin = %s.pmin" % obs)
 exec("pmax = %s.pmax" % obs)
@@ -32,7 +32,7 @@ exec("wmax = %s.wmax" % obs)
 exec("R = %s.R" % obs)
 
 # directory with output files
-dir = 'output_grids/{:s}'.format(obs)
+dir = 'output_grids/{:s}/'.format(obs)
 
 # grab the wavelength grid from the first model in the grid
 fn0 = dir+'TellModel_{:s}_{:.0f}_{:.0f}_P{:.0f}_T{:.0f}_H{:.0f}_AM{:.3f}_R{:.0f}.fits'.format(
